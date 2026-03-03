@@ -20,6 +20,7 @@ enum class HorizontalFloatingToolbarVariant(val value: String) : Enumerable {
 data class HorizontalFloatingToolbarProps(
   val variant: HorizontalFloatingToolbarVariant? =
     HorizontalFloatingToolbarVariant.STANDARD,
+  val expanded: Boolean? = true,
   val modifiers: ModifierList = emptyList()
 ) : ComposeProps
 
@@ -51,13 +52,27 @@ fun FunctionalComposableScope.HorizontalFloatingToolbarContent(props: Horizontal
   }
 
   val scrollBehavior = composableScope.nestedScrollConnection as? FloatingToolbarScrollBehavior
-  HorizontalFloatingToolbar(
-    expanded = true,
-    colors = colors,
-    scrollBehavior = scrollBehavior,
-    modifier = ModifierRegistry.applyModifiers(props.modifiers, appContext, composableScope, globalEventDispatcher),
-    floatingActionButton = floatingActionButton
-  ) {
-    Children(ComposableScope(), filter = { !isSlotView(it) })
+  val expandedValue = props.expanded ?: true
+  val modifier = ModifierRegistry.applyModifiers(props.modifiers, appContext, composableScope, globalEventDispatcher)
+
+  if (fabSlotView != null) {
+    HorizontalFloatingToolbar(
+      expanded = expandedValue,
+      floatingActionButton = floatingActionButton,
+      colors = colors,
+      scrollBehavior = scrollBehavior,
+      modifier = modifier,
+    ) {
+      Children(ComposableScope(), filter = { !isSlotView(it) })
+    }
+  } else {
+    HorizontalFloatingToolbar(
+      expanded = expandedValue,
+      colors = colors,
+      scrollBehavior = scrollBehavior,
+      modifier = modifier,
+    ) {
+      Children(ComposableScope(), filter = { !isSlotView(it) })
+    }
   }
 }

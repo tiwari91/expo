@@ -6,6 +6,15 @@ export type HorizontalFloatingToolbarProps = {
      */
     variant?: 'standard' | 'vibrant';
     /**
+     * Whether the toolbar is expanded.
+     *
+     * When `true`, the toolbar will show both the content and the floating action button.
+     * When `false`, the toolbar will collapse to show only the floating action button.
+     *
+     * @default true
+     */
+    expanded?: boolean;
+    /**
      * The children of the component.
      */
     children: React.ReactNode;
